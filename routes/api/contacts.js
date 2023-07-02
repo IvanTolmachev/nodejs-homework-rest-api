@@ -4,21 +4,32 @@ const {
   validationBody,
   validationById,
   validationFavorite,
+  authenticate,
 } = require("../../middlewares");
 
 const ctrl = require("../../controllers/contacts");
 
 const router = express.Router();
 
-router.get("/", ctrl.listContacts);
+router.get("/", authenticate, ctrl.listContacts);
 
-router.get("/:contactId", validationById, ctrl.getContactById);
+router.get("/:contactId", authenticate, validationById, ctrl.getContactById);
 
-router.get("/:contactId/favorite", validationById, ctrl.getByIdContactFavorite);
+router.get(
+  "/:contactId/favorite",
+  authenticate,
+  validationById,
+  ctrl.getByIdContactFavorite
+);
 
-router.post("/", validationBody(schema.addSchema), ctrl.addContact);
+router.post(
+  "/",
+  authenticate,
+  validationBody(schema.addSchema),
+  ctrl.addContact
+);
 
-router.delete("/:contactId", validationById, ctrl.removeContact);
+router.delete("/:contactId", authenticate, validationById, ctrl.removeContact);
 
 router.put(
   "/:contactId",
