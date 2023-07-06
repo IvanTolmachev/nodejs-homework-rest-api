@@ -1,5 +1,7 @@
 const User = require("../../models/user");
 const bcrypt = require("bcrypt");
+const gravatar = require("gravatar");
+
 const { controllerWrapper, requestError } = require("../../utils/index");
 
 const register = async (req, res) => {
@@ -9,15 +11,18 @@ const register = async (req, res) => {
   if (user) {
     throw requestError(409, `User with email ${email} already exists`);
   }
+  const avatarURL = gravatar.url(email);
 
   const hashPassword = await bcrypt.hash(password, 12);
 
-  const newUser = await User.create({ ...req.body, password: hashPassword });
-  res
-    .status(201)
-    .json({
-      user: { email: newUser.email, subscription: newUser.subscription },
-    });
+  const newUser = await User.create({
+    ...req.body,
+    password: hashPassword,
+    avatarURL,
+  });
+  res.status(201).json({
+    user: { email: newUser.email, subscription: newUser.subscription },
+  });
 };
 
 module.exports = controllerWrapper(register);
