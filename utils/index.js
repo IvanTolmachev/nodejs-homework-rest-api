@@ -3,6 +3,7 @@ const controllerWrapper = require("./controllerWrapper");
 const mongooseError = require("./mongooseError");
 const serverMongooseError = require("./serverMongooseError");
 const modifyImage = require("./modifyImage");
+const sendEmail = require("./sendEmail");
 
 module.exports = {
   requestError,
@@ -10,4 +11,5 @@ module.exports = {
   mongooseError,
   serverMongooseError,
   modifyImage,
+  sendEmail,
 };

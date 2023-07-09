@@ -4,6 +4,7 @@ const emailRegEx =
   /^([a-z0-9_-]+\.)*[a-z0-9_-]+@[a-z0-9_-]+(\.[a-z0-9_-]+)*\.[a-z]{2,6}$/;
 const passwordRegEx = /^(?=.*[A-Za-z])(?=.*\d)[A-Za-z\d].{8,30}$/;
 const subscriptionTypes = ["starter", "pro", "business"];
+const emailReEx = /^\w+(\.-?\w+)*@\w+(\.-?\w+)*(\.\w{2,3})+$/;
 
 const registerSchema = Joi.object(
   {
@@ -46,9 +47,16 @@ const subscriptionSchema = Joi.object({
     .required(),
 });
 
+const resentVerificationSchema = Joi.object({
+  email: Joi.string().pattern(emailReEx).required().messages({
+    "string.pattern.base": "You have misprint in your email",
+  }),
+});
+
 const userSchema = {
   registerSchema,
   loginSchema,
   subscriptionSchema,
+  resentVerificationSchema,
 };
 module.exports = userSchema;
